@@ -1,0 +1,96 @@
+// Set a state of a variable when you press a pushbutton ( the 
+//  button went from off to on ). 
+ 
+const int in2  = 2;     // the pin that the pushbutton is attached to
+const int in3  = 3;     // the pin that the pushbutton is attached to
+const int in4  = 4;     // the pin that the pushbutton is attached to
+
+const int out13  = 13;    // the pin that the LED is attached to
+const int out52  = 52;    // the pin that the LED is attached to
+const int out53  = 53;    // the pin that the LED is attached to
+
+int buttonState      = 0;     // current state of the button
+int lastButtonState  = 0;     // previous state of the button
+int switchState      = 0;     // remember current switch state
+
+void setup() {
+  // initialize the LED pins:
+  for (int thisPin = 2; thisPin < 7; thisPin++) {
+    pinMode(13, OUTPUT);
+    pinMode(52, OUTPUT);
+    pinMode(53, OUTPUT);
+
+  // initialize the pushbutton pin as an input:
+  pinMode(2, INPUT_PULLUP);
+  pinMode(3, INPUT_PULLUP);
+  pinMode(4, INPUT_PULLUP);
+  }
+}
+
+void loop() {
+
+  // check if the button is pressed or released
+
+  if ( (digitalRead (2) == HIGH) && 
+       (digitalRead (3) == LOW) && 
+       (digitalRead (4) == LOW))              //condition 1
+     {
+       switchState=1;
+     }
+
+  if ( (digitalRead (2) == LOW) && 
+       (digitalRead (3) == HIGH) && 
+       (digitalRead (4) == LOW))              //condition 1
+     {
+       switchState=2;
+     }
+
+  if ( (digitalRead (2) == LOW) && 
+       (digitalRead (3) == LOW) && 
+       (digitalRead (4) == HIGH))              //condition 1
+     {
+       switchState=3;
+     }
+ 
+    
+    // remember the current state of the button
+    lastButtonState = buttonState;
+  
+  // adding a small delay prevents reading the buttonState to fast
+  // ( debouncing )
+  delay(20);
+    
+  }
+
+    // read the sensor:
+      int switchState = analogRead(A0);
+  
+    // map the sensor range to a range of four options:
+      int switchState = map(sensorReading, sensorMin, sensorMax, 0, 3);
+    
+    switch (switchState) {
+      case '1':
+        digitalWrite(13, HIGH);
+        digitalWrite(52, LOW);
+        digitalWrite(53, LOW);
+        break;
+      case '2':
+        digitalWrite(52, HIGH);
+        digitalWrite(13, LOW);
+        digitalWrite(53, LOW);
+        
+        break;
+      case '3':
+        digitalWrite(53, HIGH);
+        digitalWrite(13, LOW);
+        digitalWrite(52, LOW);
+        break;
+      default:
+        // turn all the LEDs off:
+        digitalWrite(13, LOW);
+        digitalWrite(52, LOW);
+        digitalWrite(53, LOW);
+      }
+    }
+  }
+}
