@@ -1,0 +1,175 @@
+#include <FastLED.h>
+#define LED_PIN 2
+#define NUM_LEDS 144
+
+CRGB leds[NUM_LEDS];
+
+
+void setup() {
+  FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
+  FastLED.clear();
+  FastLED.setBrightness(255);
+  FastLED.show();
+   
+}
+
+void loop() {
+
+   // 01 Move a single white led Slow
+   for(int whiteLed = 0; whiteLed < NUM_LEDS; whiteLed = whiteLed + 1) {
+      // Turn our current led on to white, then show the leds
+      leds[whiteLed] = CRGB::White;
+
+      // Show the leds (only one of which is set to white, from above)
+      FastLED.show();
+
+      // Wait a little bit
+      delay(100);
+
+      // Turn our current led back to black for the next loop around
+      leds[whiteLed] = CRGB::Black;
+   }
+
+  // 02 Move a single white led Slow
+   for(int whiteLed = 0; whiteLed < NUM_LEDS; whiteLed = whiteLed + 1) {
+      // Turn our current led on to white, then show the leds
+      leds[whiteLed] = CRGB::White;
+
+      // Show the leds (only one of which is set to white, from above)
+      FastLED.show();
+
+      // Wait a little bit
+      delay(100);
+
+      // Turn our current led back to black for the next loop around
+      leds[whiteLed] = CRGB::Black;
+   }
+
+    // 03 Turn lights from Off to White from left to right   R G B 
+  for (int i=0; i<NUM_LEDS; i++){
+    leds[i] = CRGB::White;
+    FastLED.show();
+    delay(5);
+  }
+
+      // 03 Turn lights from Off to White from left to right   R G B 
+  for (int i=0; i<NUM_LEDS; i++){
+    leds[i] = CRGB::White;
+    FastLED.show();
+    delay(5);
+  }
+
+  // 04 Turn lights from White to Off from left to right   R G B 
+  for (int i=0; i<NUM_LEDS; i++){
+    leds[i] = CRGB::Black;
+    FastLED.show();
+    delay(5);
+  }
+
+   // 05 Move a single white led Fast
+   for(int whiteLed = 0; whiteLed < NUM_LEDS; whiteLed = whiteLed + 1) {
+      // Turn our current led on to white, then show the leds
+      leds[whiteLed] = CRGB::White;
+
+      // Show the leds (only one of which is set to white, from above)
+      FastLED.show();
+
+      // Wait a little bit
+      delay(5);
+
+      // Turn our current led back to black for the next loop around
+      leds[whiteLed] = CRGB::Black;
+   }
+   
+   // 06 Move a single white led Fast
+   for(int whiteLed = 0; whiteLed < NUM_LEDS; whiteLed = whiteLed + 1) {
+      // Turn our current led on to white, then show the leds
+      leds[whiteLed] = CRGB::White;
+
+      // Show the leds (only one of which is set to white, from above)
+      FastLED.show();
+
+      // Wait a little bit
+      delay(5);
+
+      // Turn our current led back to black for the next loop around
+      leds[whiteLed] = CRGB::Black;
+   }
+
+      // 07 Move a single white led Fast
+   for(int whiteLed = 0; whiteLed < NUM_LEDS; whiteLed = whiteLed + 1) {
+      // Turn our current led on to white, then show the leds
+      leds[whiteLed] = CRGB::White;
+
+      // Show the leds (only one of which is set to white, from above)
+      FastLED.show();
+
+      // Wait a little bit
+      delay(5);
+
+      // Turn our current led back to black for the next loop around
+      leds[whiteLed] = CRGB::Black;
+   }
+
+      // 08 Move a single white led Fast
+   for(int whiteLed = 0; whiteLed < NUM_LEDS; whiteLed = whiteLed + 1) {
+      // Turn our current led on to white, then show the leds
+      leds[whiteLed] = CRGB::White;
+
+      // Show the leds (only one of which is set to white, from above)
+      FastLED.show();
+
+      // Wait a little bit
+      delay(5);
+
+      // Turn our current led back to black for the next loop around
+      leds[whiteLed] = CRGB::Black;
+   }
+
+      // 09 Move a single white led Fast
+   for(int whiteLed = 0; whiteLed < NUM_LEDS; whiteLed = whiteLed + 1) {
+      // Turn our current led on to white, then show the leds
+      leds[whiteLed] = CRGB::White;
+
+      // Show the leds (only one of which is set to white, from above)
+      FastLED.show();
+
+      // Wait a little bit
+      delay(5);
+
+      // Turn our current led back to black for the next loop around
+      leds[whiteLed] = CRGB::Black;
+   }
+
+      // 10 Move a single white led Fast
+   for(int whiteLed = 0; whiteLed < NUM_LEDS; whiteLed = whiteLed + 1) {
+      // Turn our current led on to white, then show the leds
+      leds[whiteLed] = CRGB::White;
+
+      // Show the leds (only one of which is set to white, from above)
+      FastLED.show();
+
+      // Wait a little bit
+      delay(5);
+
+      // Turn our current led back to black for the next loop around
+      leds[whiteLed] = CRGB::Black;
+   }
+
+   
+   // 11 Turn lights from Off to White from Right to Left   R G B 
+  for (int i=NUM_LEDS; i>=0; i--){
+    leds[i] = CRGB::White;
+    FastLED.show();
+    delay(5);
+  }
+
+    // 12 Turn lights from White to Off from Right to Left   R G B 
+  for (int i=NUM_LEDS; i>=0; i--){
+    leds[i] = CRGB(0,0,0);
+    FastLED.show();
+    delay(5);
+  }
+
+  
+}
