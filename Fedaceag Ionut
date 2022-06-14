@@ -1,0 +1,172 @@
+//How to control groups of leds in FastLed Library with Arduino and WS2812B - Tips & Tricks FastLed Library - by Fedaceag Ionut ( Youtube - Think small, build big! )
+
+#include <FastLED.h>            // FastLed library version 3.2.1 - https://github.com/FastLED/FastLED/wiki/Overview or http://fastled.io/ with NEOPIXEL or WS2812B
+#define LED_TYPE  WS2812B       // define the led type
+#define NUM_STRIPS 1            // number of led strips
+#define NUM_LEDS 144   // total number of leds per strip
+CRGB leds[NUM_STRIPS][NUM_LEDS];
+
+//----------------------------------------------------------------------------------------------------------
+
+//Global Vaiables
+
+const int btn1 = 46;
+const int btn2 = 48;
+const int btn3 = 50;
+const int btn4 = 52;
+
+const int pot1 = A0;
+const int pot2 = A1;
+
+int btn1Val = 0;
+int btn2Val = 0;
+int btn3Val = 0;
+int btn4Val = 0;
+
+int pot1Val = 0;
+int pot2Val = 0;
+
+int signalState = 0;
+int signalAnim = 2;
+int delaySignalAnim = 10;
+int delaySignalOff = 250;
+
+unsigned long currentMillis = 0; 
+unsigned long previousMillis = 0;
+unsigned long currentTime = 0;
+unsigned long lastTrigger = 0;
+
+//--------------------------------------------------------------------------------------------------------------------
+
+// This function sets up the ledsand tells the controller about them
+
+void setup() {
+  Serial.begin(115200);
+  
+  pinMode(btn1, INPUT_PULLUP);
+  pinMode(btn2, INPUT_PULLUP);
+  pinMode(btn3, INPUT_PULLUP);
+  pinMode(btn4, INPUT_PULLUP);
+  
+  pinMode(pot1, INPUT);
+  pinMode(pot2, INPUT);
+
+  FastLED.addLeds<NEOPIXEL, 2>(leds[0], NUM_LEDS); //define the pin output for led strip one
+
+  fill_solid(leds[0], NUM_LEDS, CRGB::Black); // some led strips are all on at power on, so let's power them off at boot
+  FastLED.show();
+}
+
+//-------------------------------------------------------------------------------------------------------
+
+// This function runs over and over, 
+
+void loop() {
+  btn1Val = digitalRead(btn1);
+  btn2Val = digitalRead(btn2);
+  btn3Val = digitalRead(btn3);
+  btn4Val = digitalRead(btn4);
+  
+  pot1Val = analogRead(pot1);
+  pot2Val = analogRead(pot2);
+
+//----------------------------------------1-----------------------------------------------------
+
+  //grouping leds with for loop
+  if(btn1Val == 0){
+
+  //Saving the current time
+  currentTime = millis();
+
+  //Delay
+    lastTrigger = currentTime;
+    
+// Move a single white led 
+    for(int show1 = 0; show1 < NUM_LEDS; show1++) {
+      leds[show1] 0,= CHSV( 100, 0, 255);
+      FastLED.show();
+
+//Delay
+    currentMillis = previousMillis = millis();
+      while(previousMillis + delaySignalAnim >= currentMillis){
+        currentMillis = millis();
+      }
+
+// Turn our current led back to black for the next loop around
+    leds[show1] 0,= CHSV(0, 100, 0);
+   }
+  }
+
+//-----------------------------------------2----------------------------------------------------------------
+
+  //grouping leds with fill_gradient
+  if(btn2Val == 0){
+  
+     for(int endSignal = 0; endSignal < NUM_LEDS; endSignal++){
+      fill_gradient(leds[0],0,CHSV( 100, 0, 255),endSignal,CHSV( 100, 0, 255));
+      
+      currentMillis = previousMillis = millis();
+      while(previousMillis + delaySignalAnim >= currentMillis){
+        FastLED.show();
+        currentMillis = millis();
+      }
+    }
+  }
+
+//----------------------------------------3-----------------------------------------------------------------
+  
+  //grouping leds with fill_gradient and changing start and end position with potentiometer
+  if(btn3Val == 0){
+    pot1Val = map(pot1Val,0,1023,0,NUM_LEDS);
+    pot2Val = map(pot2Val,0,1023,0,NUM_LEDS); //comment this line for microphone/music test
+    //pot2Val = constrain(pot2Val,0,150); //uncomment this line for microphone/music test
+    //Serial.println(pot2Val); //uncomment this line for microphone/music test
+    //pot2Val = map(pot2Val,0,150,0,NUM_LEDS); //uncomment this line for microphone/music test
+    
+    fill_gradient(leds[0],pot1Val,CHSV(160, 255, 150),pot2Val,CHSV( 160, 255, 150));
+  }
+
+//--------------------------------------4----------------------------------------------------
+
+  //signal made with fill_gradient
+  if(btn4Val == 0 || signalState != 0){
+
+    for(int endSignal = 0; endSignal < NUM_LEDS; endSignal++){
+      fill_gradient(leds[0],0,CHSV( 40, 255, 150),endSignal,CHSV( 40, 255, 150));
+      
+      currentMillis = previousMillis = millis();
+      while(previousMillis + delaySignalAnim >= currentMillis){
+        FastLED.show();
+        currentMillis = millis();
+      }
+    }
+
+    currentMillis = previousMillis = millis();
+    while(previousMillis + delaySignalOff >= currentMillis){
+      FastLED.show();
+      currentMillis = millis();
+    }
+    
+    fill_solid(leds[0], NUM_LEDS, CRGB::Black);
+    
+    currentMillis = previousMillis = millis();
+    while(previousMillis + delaySignalOff >= currentMillis){
+      FastLED.show();
+      currentMillis = millis();
+    }
+
+    signalState++;
+    if(signalState == signalAnim){
+      signalState = 0;
+    }
+    
+  }
+
+//-----------------------------------------0---------------------------------------------------------
+
+  if(btn1Val == 1 && btn2Val == 1 && btn4Val == 1 && signalState == 0){ //except btn3Val
+    fadeToBlackBy( leds[0], NUM_LEDS,50);
+  }
+  
+  FastLED.show();
+}
